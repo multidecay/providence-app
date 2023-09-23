@@ -23,9 +23,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('pages.dashboard.index');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DeviceController::class,'devices'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::controller(DeviceController::class)->group(function () {
     Route::post('/device/add','device_register');
@@ -35,29 +33,29 @@ Route::controller(DeviceController::class)->group(function () {
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard/tasks', function(){
-        return view('pages.dashboard.tasks-reports');
-    });
-
+    // Maids routes
     Route::get('/dashboard/maids', [MaidController::class,'index']);
+    Route::post('/dashboard/maids', [MaidController::class,'store']);
     Route::get('/dashboard/maids/new', function(){
         return view('pages.dashboard.maid-new');
     });
-
-    Route::post('/dashboard/maids', [MaidController::class,'store']);
     Route::get('/dashboard/maid/{id}', [MaidController::class,'show'])
         ->name('maid.show');
+    Route::post('/dashboard/maid/{id}/delete', [MaidController::class,'destroy']);
+    Route::post('/dashboard/maids/update', [MaidController::class,'update']);
 
+
+    // devices routes
     Route::get('/dashboard/devices',[DeviceController::class,'devices']);
     Route::get('/dashboard/device/{id}',[DeviceController::class,'device']);
+    Route::post('/dashboard/device/{id}/delete',[DeviceController::class,'delete']);
     Route::get('/dashboard/device/{id}/tasks',[TaskController::class,'index']);
     Route::get('/dashboard/device/{id}/new-task',[TaskController::class,'create']);
     Route::post('/dashboard/device/{id}/task',[TaskController::class,'store']);
-    Route::get('/dashboard/task/{id}',[TaskController::class,'show']);
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // task routes
+    Route::get('/dashboard/task/{id}',[TaskController::class,'show']);
+    Route::post('/dashboard/task/{id}/delete',[TaskController::class,'destroy']);
 });
 
 require __DIR__.'/auth.php';

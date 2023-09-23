@@ -114,23 +114,8 @@ class TaskController extends Controller
         $task = Task::where("id",$id)
             ->where("user_id",Auth::id())
             ->firstOrFail();
-
-        // // 1. Get device information
-        // $device = Device::where("id","=",$task->device_id)
-        //     ->where("user_id",Auth::id())
-        //     ->firstOrFail();
-
-        // // 2. Get the device's maids information
-        // $maid = Maid::where("id","=",$task->maid_id)
-        //     ->where("user_id",Auth::id())
-        //     ->firstOrFail();
-    
         
-        return view('pages.dashboard.task-report',[
-            // "device_abilities" => json_encode($device->abilities),
-            // "maid_commands" => json_encode($maid->commands),
-            'task' => $task,
-        ]);
+        return response()->json($task);
     }
 
     /**
@@ -144,9 +129,50 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTaskRequest $request, Task $task)
+    public function update(Request $request)
     {
-        //
+        $id = $request->input('id');
+        $command = $request->input('command');
+        $argument = $request->input('argument');
+
+        if($id == "" && $command == "")
+        {
+            return response("command or id is empty",422);
+        }
+
+        $task = Task::where("id","=",$id)
+            -> where("state","wait_to_pick")
+            -> where("user_id",Auth::id())
+            -> firstOrFail();
+
+        $maid = Maid::where("id","=",$task->maid_id)
+            -> where("user_id",Auth::id())
+            -> firstOrFail();
+
+        // Parse Maid Commands list, transform to assoc_value
+        // then grab the ability based on commands from request
+        $command = json_decode($maid->commands);
+        if(is_null($command)){
+            return response('Failed read maid command definition, check your maid configuration.',422);
+        }
+
+        // checking is commands from request are available 
+        // in maid commands list
+        $command_abilties = $command->{$task->command};
+        if(is_null($command_abilties) or !is_array($command_abilties))
+        {
+            return response('Failed read maid command abilities definiton, check your maids configuration.', 422);
+        }
+
+
+        try {
+            $task->command = $command;
+            $task->argument = $argument;
+            $task->save();
+            return response("",200);
+        } catch (\Throwable $th) {
+            return response($th->getMessage(),500);
+        }
     }
 
     /**
@@ -154,11 +180,12 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        Device::destroy($id);
-    }
+        $task = Task::where("id",$id)
+        ->where("user_id",Auth::id())
+        ->firstOrFail();
 
-    public function reporting()
-    {
+        $task->delete();
 
+        return response("",200);
     }
 }

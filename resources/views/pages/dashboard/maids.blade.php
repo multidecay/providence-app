@@ -41,6 +41,13 @@
             <td>
                 <textarea cols="15" rows="5" class="my-2 bg-gray-100 rounded border-none focus:ring focus:ring-gray-300">{!! $maid->signature!!}</textarea>
             </td>
+            <td>
+                <a href="/dashboard/maid/{{$maid->id}}" class="decoration-none">
+                    <button class="px-3 py-2 bg-black text-white rounded font-semibold">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                    </button>
+                </a>
+            </td>
         </tr>
         @empty
         <tr class="text-center text-gray-600">

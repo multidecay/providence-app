@@ -3,23 +3,25 @@
     <h2 class="font-bold text-2xl text-gray-800">Maid Config</h2>
     <h3 class="font-semibold text-l text-gray-600">Your maid detail and config.</h3>
     @if (!is_null($maid->name))
-    <form id="maid_uniform" class="my-4">
+    <form id="maid_uniform" class="my-4" action="/dashboard/maids/update" method="POST">
+        @csrf
+        <input type="hidden" name="id" value="{{$maid->id}}" />
         <section>
             <x-input-label for="name" placeholder="Minako" aria-placeholder="Minako" 
             class="font-semibold text-gray-700" :value="__('Name')" />
-            <input id="name" class="my-2 bg-gray-100 rounded border-none focus:ring focus:ring-gray-300" type="text" name="identity" :value="old('maid_name')" required autofocus autocomplete="username" value="{!!$maid->name!!}"> 
+            <input id="name" class="my-2 bg-gray-100 rounded border-none focus:ring focus:ring-gray-300" type="text" name="name" :value="old('maid_name')" required autofocus autocomplete="maid_name" value="{!!$maid->name!!}"> 
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </section>
         <section>
             <x-input-label for="abilities" placeholder="" aria-placeholder="" 
             class="font-semibold text-gray-700" :value="__('Abilities (i.e file-access,admin-priv)')" />
-            <textarea id="abilities" class="my-2 bg-gray-100 rounded border-none focus:ring focus:ring-gray-300" type="text" name="identity" :value="old('maid_abilities')" required autofocus rows="5" cols="33">{!! $maid->abilities !!}</textarea>
+            <textarea id="abilities" class="my-2 bg-gray-100 rounded border-none focus:ring focus:ring-gray-300" type="text" name="abilities" :value="old('maid_abilities')" required autofocus rows="5" cols="33">{!! $maid->abilities !!}</textarea>
             <x-input-error :messages="$errors->get('abilities')" class="mt-2" />
         </section>
         <section>
             <x-input-label for="commands" placeholder="Minako" aria-placeholder="Minako" 
             class="font-semibold text-gray-700" :value="__('Commands (i.e upload-file command require file-access abilities)')" />
-            <textarea id="commands" class="my-2 bg-gray-100 rounded border-none focus:ring focus:ring-gray-300" type="text" name="identity" :value="old('maid_commands')" required autofocus rows="5" cols="33">{!! $maid->commands !!}</textarea>
+            <textarea id="commands" class="my-2 bg-gray-100 rounded border-none focus:ring focus:ring-gray-300" type="text" name="commands" :value="old('maid_commands')" required autofocus rows="5" cols="33">{!! $maid->commands !!}</textarea>
             <x-input-error :messages="$errors->get('commands')" class="mt-2" />
         </section>
         <section>
@@ -32,6 +34,10 @@
             Abilities define what command can executed, because each device that connect could not have permission for certain abilities to perform command.
         </p>
         <button class="m-2 p-2 text-white bg-black hover:bg-black-700 rounded w-1/4 mx-auto focus:ring focus:ring-gray-300 font-semibold">Go!</button>
+    </form>
+    <form action="/dashboard/maid/{{$maid->id}}/delete" method="POST" onsubmit="return confirm('Really, you want delete the mad scheme? this can not be undo after it.');">
+        @csrf
+        <button class="m-2 p-2 text-red-400 bg-white border border-red-400 hover:bg-black-700 rounded w-1/4 mx-auto focus:ring focus:ring-gray-red font-semibold">Delete</button>
     </form>
     <script>
         window.addEventListener("load", ()=>{

@@ -33,12 +33,6 @@
                     <section class="flex flex-col ml-auto mr-2 my-auto w-full h-full bg-white py-6 mt-2 border-gray-150 border rounded">
                         <h1 class="font-bold text-2xl mx-auto my-2 w-4/6 font-semibold text-gray-800"> Providence </h1>
                         <ul class="list-none  font-medium list-inside">
-                            {{-- <li class="mx-auto my-2 w-4/6 font-semibold text-gray-700">
-                                <a href="/dashboard">Summaries</a>
-                            </li> --}}
-                            {{-- <li class="mx-auto my-2 w-4/6 font-semibold text-gray-700">
-                                <a href="/dashboard/tasks">Tasks & Reports</a>
-                            </li> --}}
                             <li class="mx-auto my-2 w-4/6 font-semibold text-gray-700">
                                 <a href="/dashboard/devices">Devices</a>
                             </li>
@@ -60,7 +54,7 @@
         </section>
         <footer>
             <section class="my-8">
-                <p class="text-center"> Crafted with ❤️ by <a href="https://github.com/minako2" target="_blank" class="text-pink-700">Minako</a> under MIT License.<p> 
+                <p class="text-center"> Crafted with ❤️ and lot 🤬 at text editor by <a href="https://github.com/minako2" target="_blank" class="text-pink-700">Minako</a> under MIT License.<p> 
                 <p class="text-center"> Dont forget support me on GitHub.</p>
             </section>
         </footer>

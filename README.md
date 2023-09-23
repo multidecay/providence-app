@@ -26,7 +26,7 @@ You still need implpement program to interpret what Providence message give and 
 
 ## Feature
 
-- [ ] Basic functionality (such maid register, device callback hook).
+- [x] Basic functionality (such maid register, device callback hook).
 - [ ] Basic Codegen for creating client stub.
 - [ ] Developer API.
 - [TBD] Rewrite to better performant language without loosing the conviniece.
