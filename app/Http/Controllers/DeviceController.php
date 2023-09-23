@@ -26,18 +26,29 @@ class DeviceController extends Controller
     // get devices info
     public function device($device_id)
     {
-        $device = Device::where("id","=",$device_id)->firstOrFail();
+        $device = Device::where("id","=",$device_id)
+            -> where("user_id","=",Auth::id())
+            ->firstOrFail();
 
         return view('pages.dashboard.device', [
             "device" => $device
         ]);
     }
+
+    public function delete($device_id) 
+    {
+        $device = Device::where("id","=",$device_id)
+            -> where("user_id","=",Auth::id())
+            ->firstOrFail();
+
+        $device->delete();
+
+        return redirect("/dashboard/devices");
+    }
+
     // device register to providence
     public function device_register(Request $request)
     {
-        // if(!$request->isJson()){
-        //     return response("not json",422);
-        // }
 
         // 1. check there registered maid signature
         if($request->input('signature') == ""){
@@ -96,11 +107,16 @@ class DeviceController extends Controller
 
         // 3.5 encrypt the payload
 
-        $jwe = new JOSE_JWE("$device->id|$device->hwid");
-        $jwe->encrypt(file_get_contents(env('APP_PUBLIC_KEY')));
+        try {
+            $jwe = new JOSE_JWE("$device->id|$device->hwid");
+            $jwe->encrypt(file_get_contents(env('APP_PUBLIC_KEY')));
+            return response($jwe->toString(),200);
+        } catch (\Throwable $th) {
+            $device->delete();
+            return response("",500);
+        }
 
         // 4. return device signature for it
-        return response($jwe->toString(),200);
     }
 
     // device ask for task
@@ -113,8 +129,18 @@ class DeviceController extends Controller
             return response("invalid token",422);
         }
 
-        $jwe = JOSE_JWT::decode($valid);
-        $jwe_payload = $jwe->decrypt(file_get_contents(env('APP_PRIVATE_KEY')))->plain_text;
+        $jwe = "";
+        $jwe_payload = "";
+        try {
+            $jwe = JOSE_JWT::decode($valid);
+            $jwe_payload = $jwe->decrypt(file_get_contents(env('APP_PRIVATE_KEY')))->plain_text;
+        } catch (\Throwable $th) {
+            return response("",422);
+        }
+        if ($jwe == "" || $jwe_payload == ""){
+            return response("",422);
+        }
+
         $device = explode("|",$jwe_payload);
         if(count($device) != 2){
             return response("unable parse auth token $jwe_payload",422);
@@ -182,8 +208,18 @@ class DeviceController extends Controller
             return response("invalid token",422);
         }
 
-        $jwe = JOSE_JWT::decode($valid);
-        $jwe_payload = $jwe->decrypt(file_get_contents(env('APP_PRIVATE_KEY')))->plain_text;
+        $jwe = "";
+        $jwe_payload = "";
+        try {
+            $jwe = JOSE_JWT::decode($valid);
+            $jwe_payload = $jwe->decrypt(file_get_contents(env('APP_PRIVATE_KEY')))->plain_text;
+        } catch (\Throwable $th) {
+            return response("",422);
+        }
+        if ($jwe == "" || $jwe_payload == ""){
+            return response("",422);
+        }
+
         $device = explode("|",$jwe_payload);
         if(count($device) != 2){
             return response("unable parse auth token $jwe_payload",422);
