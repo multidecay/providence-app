@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Enum\TaskStateEnum;
+use App\Models\ReportedFile;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Models\Device;
@@ -244,8 +245,8 @@ class DeviceController extends Controller
         }
 
         //2.5 Handle upload form
-        if(($request->input('type') != ReportTypeEnum::File) and $request->hasFile('message')){
-            return response("type invalid",422);
+        if(($request->input('type') != ReportTypeEnum::File->value) && $request->hasFile('message')){
+            return response("type invalid, given ".$request->input("type"),422);
         }
 
         $message = $request->input('message');
@@ -254,11 +255,20 @@ class DeviceController extends Controller
             if(!$file->isValid()){
                 return response("file upload fail", 422);
             }
-            // TODO: where I should store this file ?
-            // but accessing file required auth checking
-            // and folder is only for logged user only.
-            $message = $file->store("report_files");
-            // store function return path
+
+            $filename = $file->getClientOriginalName()."_".time().".".$file->getClientOriginalExtension();
+
+            $path = $file->storeAs("report_files/".$task->user_id,$filename);
+
+            $rfile = ReportedFile::create([
+                'user_id' => $task->user_id,
+                'task_id' => $task->id,
+                'filename' => $file->getClientOriginalName(),
+                'mimes' => $file->getClientMimeType(),
+                'path_on_storage' => $path
+            ]);
+
+            $message = $rfile->id;
         }
 
         $task->state = TaskStateEnum::Reported;

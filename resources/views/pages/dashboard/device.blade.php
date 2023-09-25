@@ -7,6 +7,11 @@
                 task: null,
                 async setTaskId(id){
                     this.task = await (await fetch('/dashboard/task/' + id)).json();
+                    if(this.task.report_type == 'file'){
+                        const report_file = await (await fetch('/dashboard/report-file/' + this.task.report_message)).json();
+                        $dispatch('set-reportfile', report_file);
+                        $dispatch('set-task', this.task);
+                    }
                     $dispatch('set-task', this.task);
                     this.showModal = true;
                 }
@@ -91,17 +96,14 @@
     </section>
             <!-- modal section -->
     <section
-            x-data="{task_form:null}"
+            x-data="{task_form:null,report_file: null}"
             x-show="task_form != null" 
             :class="{ 'absolute inset-0 z-10 flex items-center justify-center mx-auto': (task_form != null) }"
             style="background-color: rgba(0,0,0,0.5)""
             @set-task.window="task_form = $event.detail"
+            @set-reportfile.window="report_file = $event.detail"
         >
             <section  class="bg-white rounded w-1/2 mb-4 flex flex-col">
-                <button 
-                    x-on:click="task_form = null"
-                    class="ml-auto text-red-700 py-2 px-4 font-bold bg-black rounded-bl"
-                > X </button>
                 <template x-if="task_form != null">
                     <section>
                         <form id="task_report" class="px-4 py-4">
@@ -179,19 +181,38 @@
                                 </section>
                             </template>
                             <template x-if="task_form.report_message != null">
-                                <section class="flex flex-col">
-                                    <label 
-                                        for="message" 
-                                        class="font-semibold text-gray-700"
-                                    > Message </label>
-                                    <input id="message" 
-                                        class="my-2 bg-gray-100 rounded border-none focus:ring focus:ring-gray-300"
-                                        type="text"
-                                        name="message"
-                                        x-model="task_form.report_message"
-                                        readonly
-                                    />
-                                </section>
+                                <section>
+                                    <template x-if="report_file != null">
+                                        <section class="border p-2 rounded">
+                                            <p>Filename: <p x-text="report_file.filename"> </p> </p>
+                                            <p>Mimes: <p x-text="report_file.mimes"></p></p>
+                                            <button
+                                                class="p-2 bg-black font-semibold rounded text-white mt-4"
+                                                type="button"
+                                                x-on:click="
+                                                 window.open('/dashboard/report-file/' + report_file.id + '/download','_blank').focus();
+                                                "
+                                            >
+                                                Download
+                                            </button>
+                                        </section>
+                                    </template>
+                                    <template x-if="report_file == null">
+                                        <section class="flex flex-col">
+                                            <label 
+                                                for="message" 
+                                                class="font-semibold text-gray-700"
+                                            > Message </label>
+                                            <input id="message" 
+                                                class="my-2 bg-gray-100 rounded border-none focus:ring focus:ring-gray-300"
+                                                type="text"
+                                                name="message"
+                                                x-model="task_form.report_message"
+                                                readonly
+                                            />
+                                        </section>
+                                    </template>
+                                <section>
                             </template>
                         </form>
                         <form 
@@ -217,6 +238,13 @@
                             "
                         >
                             @csrf
+                            <button 
+                                class="mt-4 px-3 py-2 bg-white border-2 border-glay-400 text-gray-400 rounded font-semibold" 
+                                type="button"
+                                x-on:click="task_form = null"
+                            >
+                                Back
+                            </button>
                             <button 
                                 class="mt-4 px-3 py-2 bg-white border-2 border-red-400 text-red-400 rounded font-semibold" 
                                 type="submit"
