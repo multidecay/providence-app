@@ -39,7 +39,7 @@
                 </ul>
             </td>
             <td>
-                <textarea cols="15" rows="5" class="my-2 bg-gray-100 rounded border-none focus:ring focus:ring-gray-300">{!! $maid->signature!!}</textarea>
+                <textarea cols="15" rows="5" class="my-2 bg-gray-100 font-mono rounded border-none focus:ring focus:ring-gray-300">{!! $maid->signature!!}</textarea>
             </td>
             <td>
                 <a href="/dashboard/maid/{{$maid->id}}" class="decoration-none">

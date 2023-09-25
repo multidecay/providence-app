@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\MaidController;
+use App\Http\Controllers\ReportedFile;
+use App\Http\Controllers\ReportedFileController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Requests\StoreTaskRequest;
@@ -56,6 +58,10 @@ Route::middleware('auth')->group(function () {
     // task routes
     Route::get('/dashboard/task/{id}',[TaskController::class,'show']);
     Route::post('/dashboard/task/{id}/delete',[TaskController::class,'destroy']);
+
+    // file routes
+    Route::get('/dashboard/report-file/{id}/download', [ReportedFileController::class,'download']);
+    Route::get('/dashboard/report-file/{id}', [ReportedFileController::class,'metadata']);
 });
 
 require __DIR__.'/auth.php';
