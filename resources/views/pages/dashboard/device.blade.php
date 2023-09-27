@@ -27,9 +27,10 @@
             </section>
             <section class="w-3/4 px-4 text-gray-700">
                 <p>HWID : {!! $device->hwid !!}</p>
-                <p>Operating System : {!! $device->operating_system !!}</p>
-                <p class="flex">Country : <img class="m-2 border border-gray-700" src="http://purecatamphetamine.github.io/country-flag-icons/3x2/{!! $device->country_code !!}.svg" width="30"/></p>
+                <p>Hostname : {!! $device->hostname !!}</p>
                 <p>Last IP : {!! $device->ip !!}</p>
+                <p class="flex">Country : <img class="m-2 border border-gray-700" src="http://purecatamphetamine.github.io/country-flag-icons/3x2/{!! $device->country_code !!}.svg" width="30"/></p>
+                <p>Operating System : {!! $device->operating_system !!}</p>
                 <p>Maid : {!! $device->maid()->get()->first()->name !!}</p>
                 <p>Note : {!! $device->notes !!}</p>
                 <form method="POST" action="/dashboard/device/{{$device->id}}/delete" onsubmit="return confirm('Really, you want delete the device? this can not be undo after it.');">

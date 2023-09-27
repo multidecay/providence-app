@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('operating_system');
             $table->unsignedBigInteger('maid_id');
             $table->string('country_code');
+            $table->string('hostname')->nullable();
             $table->ipAddress('ip');
             $table->string('notes');
             $table->json('abilities');

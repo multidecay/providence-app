@@ -17,6 +17,7 @@ class Device extends Model
         'operating_system',
         'maid_id',
         'country_code',
+        'hostname',
         'ip',
         'notes',
         'abilities',

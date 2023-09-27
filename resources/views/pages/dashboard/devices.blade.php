@@ -6,6 +6,7 @@
         <table class="text-center my-6">
             <tr class="text-gray-800">
                 <th>Id</th>
+                <th>Hostname</th>
                 <th>Operating System</th>              
                 <th>Country</th>
                 <th>Maid</th>
@@ -15,6 +16,7 @@
             @forelse ($devices as $device)
                 <tr class="text-center text-gray-600 my-2">
                     <td>{!! $device->id !!}</td>
+                    <td>{!! $device->hostname !!}</td>
                     <td>{!! $device->operating_system !!}</td>
                     <td><img src="http://purecatamphetamine.github.io/country-flag-icons/3x2/{!! $device->country_code !!}.svg" width="30" class="mx-auto"/></td>
                     <td>{!! $device->maid()->get()->first()->name !!}</td>
@@ -28,7 +30,7 @@
                     </td>
                 </tr>
             @empty
-                <td colspan="6">
+                <td colspan="7">
                     <section>
                         <p class="mx-auto my-4 font-bold text-2xl text-gray-700">¯\_(ツ)_/¯</p>
                         <p class="mx-auto my-4 font-bold text-m text-gray-700">No registered devices.</p>
