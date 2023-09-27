@@ -36,6 +36,28 @@ class DeviceController extends Controller
         ]);
     }
 
+    public function device_notes(Request $request) 
+    {
+        $note = $request->input('notes');
+        if(is_null($note)){
+            return response("not can not empty",422);
+        }
+
+        $device_id = $request->input('device_id');
+        if(is_null($device_id)){
+            return response("not id can not empty",422);
+        }
+
+        $device = Device::where("id","=",$device_id)
+            -> where("user_id","=",Auth::id())
+            ->firstOrFail();
+
+        $device->notes = $note;
+        $device->save();
+
+        return redirect("/dashboard/device/".$device->id);
+    }
+
     public function delete($device_id) 
     {
         $device = Device::where("id","=",$device_id)
