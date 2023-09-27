@@ -86,6 +86,10 @@ class DeviceController extends Controller
             return response('noos',422);
         }
 
+        if($request->input('hostname') == "") {
+            return response('nohostname',422);
+        }
+
         $maid = Maid::where('signature','=',$request->input('signature'))
              ->firstOrFail();
 
@@ -122,6 +126,7 @@ class DeviceController extends Controller
             'operating_system' => $request->input("operating_system","unknown"),
             'maid_id'=> $maid->id,
             'ip' => $request->ip(),
+            'hostname' => $request->input("hostname"),
             'country_code' => geoip($request->ip())['iso_code'],
             'abilities' => json_encode($device_ablities),
             'notes' => $request->input("notes",""),
@@ -129,7 +134,6 @@ class DeviceController extends Controller
         ]);
 
         // 3.5 encrypt the payload
-
         try {
             $jwe = new JOSE_JWE("$device->id|$device->hwid");
             $jwe->encrypt(file_get_contents(env('APP_PUBLIC_KEY')));
