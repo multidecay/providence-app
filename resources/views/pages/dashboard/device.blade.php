@@ -31,7 +31,13 @@
                 <p class="flex">Country : <img class="m-2 border border-gray-700" src="http://purecatamphetamine.github.io/country-flag-icons/3x2/{!! $device->country_code !!}.svg" width="30"/></p>
                 <p>Last IP : {!! $device->ip !!}</p>
                 <p>Maid : {!! $device->maid()->get()->first()->name !!}</p>
-                <p>Note : {!! $device->notes !!}</p>
+                <form action="/dashboard/device/{!! $device->id !!}/notes" method="POST">
+                    @csrf
+                    <label for="notes">Notes: </label>
+                    <input type="hidden" name="device_id" value="{!! $device->id !!}"/>
+                    <input name="notes" class="my-2 bg-gray-100 rounded border-none focus:ring focus:ring-gray-300" value="{!! $device->notes !!}" />
+                    <button type="submit" class="p-2 bg-black text-white text-bold rounded">Noted!</button>
+                </form>
                 <form method="POST" action="/dashboard/device/{{$device->id}}/delete" onsubmit="return confirm('Really, you want delete the device? this can not be undo after it.');">
                     @csrf
                     <button class="mt-4 px-3 py-2 bg-white border-2 border-red-400 text-red-400 rounded font-semibold" type="submit">
