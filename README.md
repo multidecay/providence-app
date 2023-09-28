@@ -2,6 +2,8 @@
 
 ![GitHub](https://img.shields.io/github/license/minako2/providence-app) 
 
+![dashboard](docs/dashboard.png)
+
 Providence is minimalist command and control for watching your device, similar like Google Find My Device but a message broker to remote control your device rather a device tracker with map.
 
 ## Implant
