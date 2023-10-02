@@ -17,10 +17,16 @@ use Torann\GeoIP\Facades\GeoIP;
 class DeviceController extends Controller
 {
 
-    public function devices()
+    public function devices(Request $request)
     {
+        $device = Device::where('user_id','=',Auth::id());
+        if($request->has("tags")){
+            $tags = $request->input("tags");
+            $device = $device->whereJsonContains('tags',[urldecode($tags)]);
+        }
+
         return view('pages.dashboard.devices', [
-            "devices" => Device::where('user_id','=',Auth::id())->get(),
+            "devices" => $device->paginate(10),
         ]);
     }
 
@@ -53,6 +59,33 @@ class DeviceController extends Controller
             ->firstOrFail();
 
         $device->notes = $note;
+        $device->save();
+
+        return redirect("/dashboard/device/".$device->id);
+    }
+
+    public function device_tags(Request $request){
+        
+        $tags = $request->input('tags');
+        if(is_null($tags)){
+            $tags = "[]";
+        }
+
+        $tags = json_decode($tags, true);
+        if(!is_array($tags)){
+            return response("tags must be array",422);
+        }
+
+        $device_id = $request->input('device_id');
+        if(is_null($device_id)){
+            return response("not id can not empty",422);
+        }
+
+        $device = Device::where("id","=",$device_id)
+            -> where("user_id","=",Auth::id())
+            ->firstOrFail();
+
+        $device->tags = json_encode($tags);
         $device->save();
 
         return redirect("/dashboard/device/".$device->id);

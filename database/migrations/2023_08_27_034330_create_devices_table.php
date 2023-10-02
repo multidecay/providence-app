@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('hostname');
             $table->ipAddress('ip');
             $table->string('notes');
+            $table->json('tags')->default("[]");
             $table->json('abilities');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();

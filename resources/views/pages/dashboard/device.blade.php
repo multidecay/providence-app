@@ -39,6 +39,13 @@
                     <input name="notes" class="my-2 bg-gray-100 rounded border-none focus:ring focus:ring-gray-300" value="{!! $device->notes !!}" />
                     <button type="submit" class="p-2 bg-black text-white text-bold rounded">Noted!</button>
                 </form>
+                <form action="/dashboard/device/{!! $device->id !!}/tags" method="POST">
+                    @csrf
+                    <label for="tags">Tags: </label>
+                    <input type="hidden" name="device_id" value="{!! $device->id !!}"/>
+                    <input name="tags" class="my-2 bg-gray-100 rounded border-none focus:ring focus:ring-gray-300" value="{{$device->tags}}" />
+                    <button type="submit" class="p-2 bg-black text-white text-bold rounded">Set</button>
+                </form>
                 <form method="POST" action="/dashboard/device/{{$device->id}}/delete" onsubmit="return confirm('Really, you want delete the device? this can not be undo after it.');">
                     @csrf
                     <button class="mt-4 px-3 py-2 bg-white border-2 border-red-400 text-red-400 rounded font-semibold" type="submit">

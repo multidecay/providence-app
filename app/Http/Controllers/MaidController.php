@@ -17,9 +17,9 @@ class MaidController extends Controller
      */
     public function index()
     {
-        $maids = Maid::where("user_id",Auth::id())->forPage(1,10)->get();
+        $maids = Maid::where("user_id",Auth::id());
         return view('pages.dashboard.maids', [
-            "maids"=>$maids,
+            "maids"=>$maids->paginate(10),
         ]);
     }
 
