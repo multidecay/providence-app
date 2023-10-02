@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/device/{id}/new-task',[TaskController::class,'create']);
     Route::post('/dashboard/device/{id}/task',[TaskController::class,'store']);
     Route::post('/dashboard/device/{id}/notes',[DeviceController::class,'device_notes']);
+    Route::post('/dashboard/device/{id}/tags', [DeviceController::class,'device_tags']);
 
     // task routes
     Route::get('/dashboard/task/{id}',[TaskController::class,'show']);

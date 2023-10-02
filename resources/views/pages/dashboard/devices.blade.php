@@ -3,7 +3,7 @@
     <section class="flex flex-col">
         <h2 class="font-bold text-2xl text-gray-800"> Devices list</h2>
         <h3 class="font-semibold text-l text-gray-600"> List of devices that already registered to concensus </h3>
-        <table class="text-center my-6">
+        <table class="text-center my-6 table-auto">
             <tr class="text-gray-800">
                 <th>Id</th>
                 <th>Hostname</th>
@@ -11,6 +11,7 @@
                 <th>Country</th>
                 <th>Maid</th>
                 <th>Note</th>
+                <th>Tag</th>
                 <th>See details</th>
             </tr>
             @forelse ($devices as $device)
@@ -21,6 +22,17 @@
                     <td><img src="http://purecatamphetamine.github.io/country-flag-icons/3x2/{!! $device->country_code !!}.svg" width="30" class="mx-auto"/></td>
                     <td>{!! $device->maid()->get()->first()->name !!}</td>
                     <td>{!! $device->notes !!}</td>
+                    <td>
+                        <ul class="list-none mx-2">
+                            @foreach (json_decode($device->tags,true) as $tag)
+                                <ol>
+                                    <a href="/dashboard/devices?tags={!! $tag !!}">
+                                        <p class="mx-2 my-2 bg-white text-gray-700 border border-gray-700 rounded">{!! $tag !!}</p>
+                                    </a>
+                                </ol>
+                            @endforeach
+                        </ul>
+                    </td>
                     <td>
                         <a href="/dashboard/device/{!! $device->id !!}">
                             <button class="p-2 my-2 bg-black text-white rounded font-semibold">

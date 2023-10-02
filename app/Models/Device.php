@@ -20,6 +20,7 @@ class Device extends Model
         'hostname',
         'ip',
         'notes',
+        'tags',
         'abilities',
         'user_id'
     ];
