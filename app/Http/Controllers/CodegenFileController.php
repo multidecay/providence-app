@@ -15,7 +15,14 @@ class CodegenFileController extends Controller
         return view(
             'pages.dashboard.codegen-file-new',
             [
-                "codegen_id" => $codegen_id
+                "codegen_id" => $codegen_id,
+                "template" => "{{# commands}}
+This enumrate the commands from maids : {{.}}
+{{/commands}}
+
+{{# abilities}}
+This enumrate the abilities from maids : {{.}}
+{{/abilities}}"
             ]
         );
     }
@@ -54,10 +61,11 @@ class CodegenFileController extends Controller
         }
     }
 
-    public function update($id)
+    public function update($codegen_id,$id)
     {
         $file = CodegenFile::where('user_id',Auth::id())
         -> where("id", $id)
+        -> where("codegen_id", $codegen_id)
         -> firstOrFail();
 
         return view('pages.dashboard.codegen-file-update',[

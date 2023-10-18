@@ -140,8 +140,8 @@ class CodegenController extends Controller
        
 
         $payload = array(
-            "commands" => $maid->commands,
-            "abilites" => $maid->abilities,
+            "commands" => array_keys(json_decode($maid->commands,true)),
+            "abilities" => json_decode($maid->abilities,true),
         );
 
         $engine = new Mustache_Engine();
@@ -149,8 +149,12 @@ class CodegenController extends Controller
 
         foreach($files as $file)
         {
-            $content = $engine->render($file->content,$payload);
-            $rendered["$file->filename"] = $content;
+            try{
+                $content = $engine->render($file->content,$payload);
+                $rendered["$file->filename"] = $content;
+            } catch (\Throwable $th){
+                return response($th->getMessage(),422);
+            }
         }
 
         return array(
