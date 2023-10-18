@@ -31,14 +31,14 @@
                         <section class="mx-auto">
                             <ul class="list-none  font-medium list-inside flex">
                                 <li class="px-2 mx-auto my-2 w-4/6 font-semibold text-gray-700">
-                                    <a href="/dashboard/devices">Devices</a>
+                                    <a href="/dashboard/devices">Device</a>
                                 </li>
                                 <li class="px-2 mx-auto my-2 w-4/6 font-semibold text-gray-700">
-                                    <a href="/dashboard/maids">Maids</a>
+                                    <a href="/dashboard/maids">Maid</a>
                                 </li>
-                                {{-- <li class="px-2 mx-auto my-2 w-4/6 font-semibold text-gray-400">
-                                    <a>Codegen</a>
-                                </li> --}}
+                                <li class="px-2 mx-auto my-2 w-4/6 font-semibold text-gray-700">
+                                    <a href="/dashboard/codegens">Codegen</a>
+                                </li>
                             </ul>
                         </section>
                         <section class="ml-auto">

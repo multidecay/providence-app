@@ -42,7 +42,7 @@
                     </td>
                 </tr>
             @empty
-                <td colspan="7">
+                <td colspan="8">
                     <section>
                         <p class="mx-auto my-4 font-bold text-2xl text-gray-700">¯\_(ツ)_/¯</p>
                         <p class="mx-auto my-4 font-bold text-m text-gray-700">No registered devices.</p>

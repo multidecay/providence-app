@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CodegenController;
+use App\Http\Controllers\CodegenFileController;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\MaidController;
 use App\Http\Controllers\ReportedFile;
@@ -45,6 +47,8 @@ Route::middleware('auth')->group(function () {
         ->name('maid.show');
     Route::post('/dashboard/maid/{id}/delete', [MaidController::class,'destroy']);
     Route::post('/dashboard/maids/update', [MaidController::class,'update']);
+    Route::get('/dashboard/maid/{id}/codegen', [MaidController::class,'generate']);
+    Route::post('/dashboard/maid/codegen', [CodegenController::class,'generate_page']);
 
 
     // devices routes
@@ -60,6 +64,18 @@ Route::middleware('auth')->group(function () {
     // task routes
     Route::get('/dashboard/task/{id}',[TaskController::class,'show']);
     Route::post('/dashboard/task/{id}/delete',[TaskController::class,'destroy']);
+
+    // codegen routes
+    Route::get('/dashboard/codegens', [CodegenController::class,'index']);
+    Route::get('/dashboard/codegen/{id}', [CodegenController::class,'show']);
+    Route::get('/dashboard/codegen/{codegen_id}/file/{id}', [CodegenFileController::class,'update']);
+    Route::post('/dashboard/codegen/{codegen_id}/file/{id}', [CodegenFileController::class,'update_file']);
+    Route::get('/dashboard/codegen/{codegen_id}/file', [CodegenFileController::class,'create']);
+    Route::post('/dashboard/codegen/{codegen_id}/file', [CodegenFileController::class,'add_file']);
+    Route::get('/dashboard/codegens/new', [CodegenController::class,'create']);
+    Route::post('/dashboard/codegens/new', [CodegenController::class,'store']);
+    Route::get('/dashboard/codegen/update', [CodegenController::class,'update']);
+    Route::post('/dashboard/codegen/update', [CodegenController::class,'update_name_and_language']);
 
     // file routes
     Route::get('/dashboard/report-file/{id}/download', [ReportedFileController::class,'download']);

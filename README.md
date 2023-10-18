@@ -6,10 +6,6 @@
 
 Providence is minimalist command and control for watching your device, similar like Google Find My Device but a message broker to remote control your device rather a device tracker with map.
 
-## Implant
-
-Since codegen not ready, [here an example for it](https://gist.github.com/minako2/512d3ff1f2d817dcb22927db0da699c0).
-
 ## How it works
 
 Providence work as message passing to your devices from web pannel you've seen above. You giving order from there and the device will receive message. Each message are consist of command and argument, called as Task. Task have schema to define what command and abilities need to run, contract between Providence and you devices.
@@ -29,7 +25,7 @@ You still need implpement program to interpret what Providence message give and 
 ## Feature
 
 - [x] Basic functionality (such maid register, device callback hook).
-- [ ] Basic Codegen for creating client stub.
+- [x] Basic Codegen for creating client stub.
 - [ ] Developer API.
 - [TBD] Rewrite to better performant language without loosing the conviniece.
 
