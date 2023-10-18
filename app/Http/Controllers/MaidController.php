@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Codegen;
 use App\Models\Maid;
 use App\Http\Requests\StoreMaidRequest;
 use App\Http\Requests\UpdateMaidRequest;
@@ -129,5 +130,16 @@ class MaidController extends Controller
         $maid->delete();
 
         return redirect("/dashboard/maids");
+    }
+
+    public function generate($id)
+    {
+        $codegen = Codegen::where("user_id", Auth::id())
+            -> get();
+
+        return view(
+            'pages.dashboard.maid-codegen', 
+            ["codegens"=>$codegen,"maid_id"=>$id]
+        );
     }
 }

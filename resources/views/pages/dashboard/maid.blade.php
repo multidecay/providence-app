@@ -35,6 +35,9 @@
         </p>
         <button class="m-2 p-2 text-white bg-black hover:bg-black-700 rounded w-1/4 mx-auto focus:ring focus:ring-gray-300 font-semibold">Go!</button>
     </form>
+    <a href="/dashboard/maid/{{$maid->id}}/codegen">
+        <button class="m-2 p-2 text-white bg-black hover:bg-black-700 rounded w-1/4 mx-auto focus:ring focus:ring-gray-300 font-semibold">Generate code</button>
+    </a>
     <form action="/dashboard/maid/{{$maid->id}}/delete" method="POST" onsubmit="return confirm('Really, you want delete the mad scheme? this can not be undo after it.');">
         @csrf
         <button class="m-2 p-2 text-red-400 bg-white border border-red-400 hover:bg-black-700 rounded w-1/4 mx-auto focus:ring focus:ring-gray-red font-semibold">Delete</button>
