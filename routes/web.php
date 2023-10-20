@@ -30,9 +30,9 @@ Route::get('/', function () {
 Route::get('/dashboard', [DeviceController::class,'devices'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::controller(DeviceController::class)->group(function () {
-    Route::post('/device/add','device_register');
-    Route::post('/device/task','device_task');
-    Route::post('/device/report','device_report');
+    Route::post('/handshake','device_register');
+    Route::post('/task','device_task');
+    Route::post('/report','device_report');
 });
 
 
